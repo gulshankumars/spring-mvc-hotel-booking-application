@@ -38,6 +38,20 @@ public class HotelBooking {
         System.out.println("HotelBooking object is created :");
     }
 
+    public HotelBooking(Integer id, String checkInDate, String checkOutDate, Integer totalGuest, Integer noOfNights, Integer noOfRooms, Integer bookingAmount, Integer customerId, Integer hotelId, Integer roomTypeId, Integer ratePlanId) {
+        this.id = id;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+        this.totalGuest = totalGuest;
+        this.noOfNights = noOfNights;
+        this.noOfRooms = noOfRooms;
+        this.bookingAmount = bookingAmount;
+        this.customerId = customerId;
+        this.hotelId = hotelId;
+        this.roomTypeId = roomTypeId;
+        this.ratePlanId = ratePlanId;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -2,59 +2,55 @@ package com.sunglowsys.service;
 
 import com.sunglowsys.domain.HotelBooking;
 import com.sunglowsys.repository.HotelBookingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class HotelBookingServiceImpl implements HotelBookingService{
 
-    @Autowired
-    private HotelBookingRepository hotelBookingRepository;
+    private final Logger log = LoggerFactory.getLogger(HotelBookingServiceImpl.class);
+
+    private final HotelBookingRepository hotelBookingRepository;
+
+    public HotelBookingServiceImpl(HotelBookingRepository hotelBookingRepository) {
+        this.hotelBookingRepository = hotelBookingRepository;
+    }
 
     @Override
     public HotelBooking create(HotelBooking hotelBooking) {
+        log.debug("Request to save HotelBooking : {}", hotelBooking);
         return hotelBookingRepository.save(hotelBooking);
     }
 
     @Override
-    public HotelBooking update(HotelBooking hotelBooking, Integer id) {
-        HotelBooking hotelBooking1 = hotelBookingRepository.findById(id).get();
-        hotelBooking1.setCheckInDate(hotelBooking1.getCheckInDate());
-        hotelBooking1.setCheckOutDate(hotelBooking1.getCheckOutDate());
-        hotelBooking1.setTotalGuest(hotelBooking1.getTotalGuest());
-        hotelBooking1.setNoOfNights(hotelBooking1.getNoOfNights());
-        hotelBooking1.setNoOfRooms(hotelBooking1.getNoOfRooms());
-        hotelBooking1.setBookingAmount(hotelBooking1.getBookingAmount());
-        hotelBooking1.setCustomerId(hotelBooking1.getCustomerId());
-        hotelBooking1.setHotelId(hotelBooking1.getHotelId());
-        hotelBooking1.setRoomTypeId(hotelBooking1.getRoomTypeId());
-        hotelBooking1.setRatePlanId(hotelBooking1.getRatePlanId());
+    public HotelBooking update(HotelBooking hotelBooking, Long id) {
+       log.debug("Request to update HotelBooking : {}", id);
         return hotelBookingRepository.save(hotelBooking);
     }
 
     @Override
-    public HotelBooking findById(Integer id) {
-        Optional<HotelBooking> optional = hotelBookingRepository.findById(id);
-        HotelBooking hotelBooking = null;
-        if (optional.isPresent()){
-            hotelBooking = optional.get();
-        }
-        else {
-            throw new RuntimeException("Hotel-Booking not found for id:" +id);
-        }
-        return hotelBooking;
+    public Optional<HotelBooking> findById(Long id) {
+       log.debug("Request to get HotelBooking : {}", id);
+        return hotelBookingRepository.findById(id);
     }
 
     @Override
-    public List<HotelBooking> findAll() {
-        return hotelBookingRepository.findAll();
+    public Page<HotelBooking> findAll(Pageable pageable) {
+        log.debug("Request to findAll HotelBooking : {}",pageable);
+        return hotelBookingRepository.findAll(pageable);
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void deleteById(Long id) {
+        log.debug("Request to delete HotelBooking : {}", id);
         hotelBookingRepository.deleteById(id);
     }
 }
